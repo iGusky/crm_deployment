@@ -4,8 +4,6 @@ module.exports = ( req, res, next ) => {
   // Autorización por el header
   const authHeader = req.get('Authorization');
 
-  console.log(authHeader);
-
   if( !authHeader ){
     const error = new Error('No autenticado, no hay JWT');
     error.statusCode = 401;

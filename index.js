@@ -10,11 +10,14 @@ const cors = require('cors');
 // Conectar a mongoose
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true
+  useNewUrlParser: true
 });
 
 //Crear servidor
 const app = express();
+
+//Carpeta pública
+app.use(express.static('uploads'));
 
 // Habilitar body parser
 app.use( bodyParser.json() );
@@ -24,7 +27,7 @@ app.use( bodyParser.urlencoded({ extended: true }) );
 const whiteList = [process.env.FRONTEND_URL];
 const corsOptions = {
   origin: (origin, callback) => {
-    console.log( origin )
+    
     // Revisar si la petición viene de un servidor en white list
     const existe = whiteList.some( dominio => dominio === origin );
     if( existe ) {
@@ -40,8 +43,6 @@ app.use( cors(corsOptions) );
 //Rutas de la app
 app.use( '/', routes());
 
-//Carpeta pública
-app.use(express.static('uploads'));
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 4000
